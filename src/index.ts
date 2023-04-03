@@ -3,6 +3,11 @@ import TelegramBot from 'node-telegram-bot-api'
 const token = process.env.TELEGRAM_BOT_TOKEN as string
 const bot = new TelegramBot(token, { polling: true })
 
+// Forward message from one topic to another in a custom chat
+const customChatID = Number(process.env.CUSTOM_CHAT_ID)
+const customChatTopicFrom = Number(process.env.CUSTOM_CHAT_TOPIC_FROM)
+const customChatTopicTo = Number(process.env.CUSTOM_CHAT_TOPIC_TO)
+
 bot.onText(/https?:\/\/(www\.)?amazon\.[a-zA-Z0-9-\.]{2,}\//, (msg) => {
   const chatId = msg.chat.id
   const asin = msg.text?.match(/(?<=dp\/)[A-Z0-9]{10}/)?.[0]
@@ -25,5 +30,9 @@ bot.onText(/https?:\/\/(www\.)?amazon\.[a-zA-Z0-9-\.]{2,}\//, (msg) => {
     }
 
     bot.sendPhoto(chatId, keepaGraph, photoOptions)
+
+    if (chatId === customChatID && msg.message_thread_id === customChatTopicFrom) {
+      bot.sendPhoto(chatId, keepaGraph, { ...photoOptions, message_thread_id: customChatTopicTo })
+    }
   }
 })
