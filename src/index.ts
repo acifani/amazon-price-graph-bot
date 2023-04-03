@@ -8,10 +8,22 @@ bot.onText(/https?:\/\/(www\.)?amazon\.[a-zA-Z0-9-\.]{2,}\//, (msg) => {
   const asin = msg.text?.match(/(?<=dp\/)[A-Z0-9]{10}/)?.[0]
 
   if (asin) {
-    const graph = `https://charts.camelcamelcamel.com/it/${asin}/amazon-new-used.png?force=1&zero=0&w=600&h=360&desired=false&legend=1&ilt=1&tp=6m&fo=0&lang=it`
-    bot.sendPhoto(chatId, graph, {
-      caption: `https://it.camelcamelcamel.com/product/${asin}`,
+    // const camelGraph = `https://charts.camelcamelcamel.com/it/${asin}/amazon-new-used.png?force=1&zero=0&w=600&h=360&desired=false&legend=1&ilt=1&tp=6m&fo=0&lang=it`
+    const keepaGraph = `https://graph.keepa.com/pricehistory.png?asin=${asin}&domain=it&salesrank=1&amazon=1&new=1&used=1&bb=0&fba=0&fbm=0&pe=0&ld=1&bbu=0&wd=0&range=180&width=600&height=300`
+
+    const photoOptions: TelegramBot.SendPhotoOptions = {
+      disable_notification: true,
       message_thread_id: msg.message_thread_id,
-    })
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: 'Keepa', url: `https://keepa.com/#!product/8-${asin}` },
+            { text: 'CamelCamelCamel', url: `https://it.camelcamelcamel.com/product/${asin}` },
+          ],
+        ],
+      },
+    }
+
+    bot.sendPhoto(chatId, keepaGraph, photoOptions)
   }
 })
