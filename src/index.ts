@@ -13,8 +13,8 @@ bot.onText(/https?:\/\/(?:www\.)?amazon\.it\//, (msg) => {
   matches?.forEach((asin) => sendProductMessages(asin, msg))
 })
 
-bot.onText(/https?:\/\/(amzn\.to|voob\.it)\//, async (msg) => {
-  const links = msg.text?.match(/https?:\/\/(amzn\.to|voob\.it)\/(\w+)/g)
+bot.onText(/https?:\/\/(amzn\.(?:eu|to)|voob\.it)\//, async (msg) => {
+  const links = msg.text?.match(/https?:\/\/(amzn\.(?:eu|to)|voob\.it)\/(\w+)/g)
   if (!links) {
     console.warn('Could not find links for', msg.text)
     return
