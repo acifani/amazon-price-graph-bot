@@ -14,7 +14,7 @@ bot.onText(/https?:\/\/(?:www\.)?amazon\.it\//, (msg) => {
 })
 
 bot.onText(/https?:\/\/(amzn\.(?:eu|to)|voob\.it)\//, async (msg) => {
-  const links = msg.text?.match(/https?:\/\/(amzn\.(?:eu|to)|voob\.it)\/(\w+)/g)
+  const links = msg.text?.match(/https?:\/\/(amzn\.(?:eu|to)|voob\.it)\/(\w+)(?:\/\w+)?/g)
   if (!links) {
     console.warn('Could not find links for', msg.text)
     return
