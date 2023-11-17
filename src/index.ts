@@ -9,7 +9,7 @@ const customChatTopicFrom = Number(process.env.CUSTOM_CHAT_TOPIC_FROM)
 const customChatTopicTo = Number(process.env.CUSTOM_CHAT_TOPIC_TO)
 
 bot.onText(/https?:\/\/(?:www\.)?amazon\.it\//, (msg) => {
-  const matches = msg.text?.match(/(?<=dp\/)[A-Z0-9]{10}/)
+  const matches = msg.text?.match(/(?<=dp\/|gp\/product\/)[A-Z0-9]{10}/)
   matches?.forEach((asin) => sendProductMessages(asin, msg))
 })
 
