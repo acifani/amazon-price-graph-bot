@@ -7,4 +7,4 @@ COPY . /usr/src/app
 
 RUN corepack enable && pnpm install && pnpm build && pnpm prune --prod
 
-CMD ["pnpm", "start"]
+CMD ["node", "dist/index.js"]
