@@ -9,8 +9,10 @@ const customChatID = Number(process.env.CUSTOM_CHAT_ID)
 const customChatTopicFrom = Number(process.env.CUSTOM_CHAT_TOPIC_FROM)
 const customChatTopicTo = Number(process.env.CUSTOM_CHAT_TOPIC_TO)
 
+const asinRegex = /(?<=d\/|dp\/|gp\/product\/|gp\/aw\/d\/|gp\/offer-listing\/)[A-Z0-9]{10}/g
+
 bot.hears(/https?:\/\/(?:www\.)?amazon\.it\//, (ctx) => {
-  const matches = ctx.message?.text?.match(/(?<=dp\/|gp\/product\/)[A-Z0-9]{10}/)
+  const matches = ctx.message?.text?.match(asinRegex)
   matches?.forEach((asin) => sendProductMessages(asin, ctx))
 })
 
@@ -24,7 +26,7 @@ bot.hears(/https?:\/\/(amzn\.(?:eu|to)|voob\.it)\//, async (ctx) => {
   for (const link of links) {
     const res = await fetch(link, { redirect: 'manual' })
     const amznLink = res.headers.get('Location')
-    const asin = amznLink?.match(/(?<=dp\/)[A-Z0-9]{10}/)?.[0]
+    const asin = amznLink?.match(asinRegex)?.[0]
 
     if (asin) {
       sendProductMessages(asin, ctx)
